@@ -1,2 +1,2 @@
-export * from "./common";
-export * from "./srp";
+export * as common from "./common";
+export * as srp from "./srp";

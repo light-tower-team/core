@@ -1,2 +1,2 @@
-export * as common from "./common";
-export * as srp from "./srp";
+export * as common from "./common/index.js";
+export * as srp from "./srp/index.js";

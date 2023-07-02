@@ -1,6 +1,6 @@
-import { BigNumber } from "../big-number";
-import { g, H, k, N } from "../params";
-import type { Session } from "../types";
+import { BigNumber } from "../big-number.js";
+import { g, H, k, N } from "../params.js";
+import type { Session } from "../types.js";
 
 /**
  * Device session

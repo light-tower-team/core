@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import { generateCryptoRandomString } from "../generateCryptoRandomString";
-import { generateAccountKey } from ".";
-import { MAX_ACCOUNT_KEY_SNIPPET_LENGTH } from "./constants";
+import { generateCryptoRandomString } from "../generateCryptoRandomString.js";
+import { MAX_ACCOUNT_KEY_SNIPPET_LENGTH } from "./constants.js";
 import {
   IncorrectAccountSecretError,
   IncorrectAccountSecretLengthError,
   IncorrectAccountVersionError,
   IncorrectAccountVersionLengthError,
-} from "./errors";
+} from "./errors.js";
+import { generateAccountKey } from "./generateAccountKey.js";
 
 describe("generateAccountKey", () => {
   it("should generate account key", () => {

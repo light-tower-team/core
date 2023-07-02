@@ -1,7 +1,7 @@
-import { BigNumber } from "../big-number";
-import { g, N } from "../params";
-import { Verifier } from "../types";
-import { derivePrivateKey } from ".";
+import { BigNumber } from "../big-number.js";
+import { g, N } from "../params.js";
+import { Verifier } from "../types.js";
+import { derivePrivateKey } from "./derivePrivateKey.js";
 
 /**
  * Derives verifier

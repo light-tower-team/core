@@ -29,7 +29,7 @@
     "dev": "vite",
     "test": "vitest",
     "ts_check": "tsc --noEmit",
-    "build": "yarn ts_check && vite build && tsc --emitDeclarationOnly",
+    "build": "yarn ts_check && vite build && tsc --declaration --emitDeclarationOnly",
     "preview": "vite preview",
     "lint": "eslint . --fix  --report-unused-disable-directives --max-warnings 0",
     "lint:check": "eslint .",

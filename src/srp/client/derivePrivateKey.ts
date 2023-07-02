@@ -1,4 +1,4 @@
-import { H } from "../params";
+import { H } from "../params.js";
 
 /**
  * Derive private key

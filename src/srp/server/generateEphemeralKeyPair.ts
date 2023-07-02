@@ -1,6 +1,6 @@
-import { BigNumber } from "../big-number";
-import { g, k, N } from "../params";
-import type { Ephemeral } from "../types";
+import { BigNumber } from "../big-number.js";
+import { g, k, N } from "../params.js";
+import type { Ephemeral } from "../types.js";
 
 /**
  * Generates public and secret ephemeral key pair

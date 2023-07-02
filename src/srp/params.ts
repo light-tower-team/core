@@ -1,5 +1,5 @@
-import { BigNumber } from "./big-number";
-import { sha256 } from "./sha256";
+import { BigNumber } from "./big-number.js";
+import { sha256 } from "./sha256.js";
 
 const LARGE_SAFE_PRIME_NUMBER = `
     AC6BDB41 324A9A9B F166DE5E 1389582F AF72B665 1987EE07 FC319294

@@ -1,6 +1,6 @@
-import { BigNumber } from "../big-number";
-import { H } from "../params";
-import { Session } from "../types";
+import { BigNumber } from "../big-number.js";
+import { H } from "../params.js";
+import { Session } from "../types.js";
 
 /**
  * Verify session

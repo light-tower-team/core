@@ -9,11 +9,12 @@
   "typings": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.es.js",
       "require": "./dist/index.umd.js"
     }
   },
-  "version": "0.0.1-alpha5",
+  "version": "0.0.1-alpha6",
   "type": "module",
   "license": "ISC",
   "author": "michailshcherbakov@gmail.com",

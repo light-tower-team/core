@@ -19,9 +19,7 @@ import { toFormatKey } from "./utils/toFormatKey";
  *  @param {string} secret any account unique secret
  *  @returns {string} the generated account key
  *  @example
- *  ```ts
- *  generateAccountKey("A3", "secret"); // A3-ASWWYB-798JRY-LJVD4-23DC2-86TVM-H43EB
- *  ```
+ *  generateAccountKey("A3", "secret"); // A3-SECRET-798JRY-LJVD4-23DC2-86TVM-H43EB
  */
 export function generateAccountKey(versionCode: string, secret: string) {
   const formattedVersionCode = versionCode.trim();

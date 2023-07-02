@@ -8,5 +8,3 @@ import forge from "node-forge";
 export function generateCryptoRandomString(length: number) {
   return forge.util.bytesToHex(forge.random.getBytesSync(length)).slice(0, length).toUpperCase();
 }
-
-export default generateCryptoRandomString;

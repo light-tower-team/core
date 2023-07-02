@@ -12,7 +12,7 @@
       "require": "./dist/index.umd.js"
     }
   },
-  "version": "0.0.1-alpha2",
+  "version": "0.0.1-alpha3",
   "type": "module",
   "license": "ISC",
   "author": "michailshcherbakov@gmail.com",

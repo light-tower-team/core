@@ -1,6 +1,6 @@
 import * as forge from "node-forge";
 
-import { BigNumber } from "./big-number.js";
+import { BigNumber } from "./big-number";
 
 /**
  * @description SHA-256 hash function

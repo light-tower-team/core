@@ -1,8 +1,8 @@
-import { generateAccountKey, generateCryptoRandomString } from "@common/index.js";
+import { generateAccountKey, generateCryptoRandomString } from "@common/index";
 import { faker } from "@faker-js/faker";
 import { describe, expect, it } from "vitest";
 
-import * as srp from "./src.js";
+import * as srp from "./src";
 
 describe("[SRP] ...", () => {
   it("should correct generate verifier in the client", () => {

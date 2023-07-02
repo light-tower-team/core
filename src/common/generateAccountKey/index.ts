@@ -1,1 +1,1 @@
-export * from "./generateAccountKey.js";
+export * from "./generateAccountKey";

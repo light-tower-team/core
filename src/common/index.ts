@@ -1,2 +1,2 @@
-export * from "./generateAccountKey/index.js";
-export * from "./generateCryptoRandomString.js";
+export * from "./generateAccountKey";
+export * from "./generateCryptoRandomString";

@@ -1,2 +1,2 @@
-export * from "./deriveSession.js";
-export * from "./generateEphemeralKeyPair.js";
+export * from "./deriveSession";
+export * from "./generateEphemeralKeyPair";

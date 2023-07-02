@@ -5,7 +5,7 @@
     "lib": ["ESNext"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "allowJs": false,
@@ -19,7 +19,6 @@
     "forceConsistentCasingInFileNames": true,
     "jsx": "preserve",
     "baseUrl": "./",
-    "types": ["node"],
     "paths": {
       "@common/*": ["./src/common/*"],
       "@src/*": ["./src/*"]

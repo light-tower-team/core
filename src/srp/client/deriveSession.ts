@@ -1,6 +1,6 @@
-import { BigNumber } from "../big-number.js";
-import { g, H, k, N } from "../params.js";
-import * as Types from "../types.js";
+import { BigNumber } from "../big-number";
+import { g, H, k, N } from "../params";
+import * as Types from "../types";
 
 /**
  * Derive session

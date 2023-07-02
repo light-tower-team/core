@@ -1,4 +1,4 @@
-import { ACCOUNT_KEY_SNIPPET_LENGTH } from "../constants.js";
+import { ACCOUNT_KEY_SNIPPET_LENGTH } from "../constants";
 
 export function toFormatKey(versionCode: string, secret: string): string {
   const parts: string[] = [versionCode];

@@ -1,17 +1,17 @@
-import { generateCryptoRandomString } from "../generateCryptoRandomString.js";
+import { generateCryptoRandomString } from "../generateCryptoRandomString";
 import {
   ACCOUNT_SECRET_REGEX,
   ACCOUNT_VERSION_LENGTH,
   ACCOUNT_VERSION_REGEX,
   MAX_ACCOUNT_KEY_SNIPPET_LENGTH,
-} from "./constants.js";
+} from "./constants";
 import {
   IncorrectAccountSecretError,
   IncorrectAccountSecretLengthError,
   IncorrectAccountVersionError,
   IncorrectAccountVersionLengthError,
-} from "./errors.js";
-import { toFormatKey } from "./utils/toFormatKey.js";
+} from "./errors";
+import { toFormatKey } from "./utils/toFormatKey";
 
 /**
  *  Generates the account unique key

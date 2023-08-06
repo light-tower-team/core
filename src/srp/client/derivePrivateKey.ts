@@ -7,9 +7,9 @@ import { H } from "../params";
  * @param {string} salt
  * @returns {string} private key
  */
-export const derivePrivateKey = (secretKey: string, password: string, salt: string): string => {
+export async function derivePrivateKey(secretKey: string, password: string, salt: string): Promise<string> {
   const s = salt;
   const I = secretKey;
   const p = password;
-  return H(s, H(`${I}:${p}`)).toHex();
-};
+  return (await H(s, await H(`${I}:${p}`))).toHex();
+}

@@ -8,9 +8,9 @@ import { derivePrivateKey } from "./derivePrivateKey";
  * @param {string} secretKey
  * @returns {Verifier} verifier
  */
-export function deriveVerifier(secretKey: string, password: string): Verifier {
+export async function deriveVerifier(secretKey: string, password: string): Promise<Verifier> {
   const salt = BigNumber.randomInteger(256 / 8).toHex();
-  const privateKey = derivePrivateKey(secretKey, password, salt);
+  const privateKey = await derivePrivateKey(secretKey, password, salt);
 
   const x = BigNumber.fromHex(privateKey);
   const v = g.modPow(x, N);

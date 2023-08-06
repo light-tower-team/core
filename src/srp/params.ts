@@ -16,5 +16,7 @@ const LARGE_SAFE_PRIME_NUMBER = `
 
 export const N = BigNumber.fromHex(LARGE_SAFE_PRIME_NUMBER.replace(/\s+/g, ""));
 export const g = BigNumber.fromHex("02".replace(/\s+/g, ""));
-export const k = sha256(N, g);
+export let k = BigNumber.ZERO;
 export const H = sha256;
+
+(async () => (k = await sha256(N, g)))();

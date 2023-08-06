@@ -6,4 +6,4 @@ export const MAX_ACCOUNT_KEY_SNIPPET_LENGTH = ACCOUNT_KEY_SNIPPET_COUNT * ACCOUN
 export const ACCOUNT_VERSION_LENGTH = 2;
 
 export const ACCOUNT_VERSION_REGEX = /^[a-zA-Z0-9]{2}$/;
-export const ACCOUNT_SECRET_REGEX = /^[a-zA-Z0-9]+$/;
+export const ACCOUNT_SALT_REGEX = /^[a-zA-Z0-9]+$/;

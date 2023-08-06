@@ -2,10 +2,10 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "moduleResolution": "Bundler",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "allowJs": false,
@@ -22,7 +22,8 @@
     "paths": {
       "@common/*": ["./src/common/*"],
       "@src/*": ["./src/*"]
-    }
+    },
+    "types": ["vitest/globals"]
   },
   "include": ["src/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]

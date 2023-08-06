@@ -1,5 +1,6 @@
+import { _crypto } from "@common/crypto";
+import { Hex } from "@common/encoders/hex";
 import { BigInteger } from "jsbn";
-import * as forge from "node-forge";
 
 const kBigInteger = Symbol("big-integer");
 const kHexLength = Symbol("hex-length");
@@ -62,6 +63,6 @@ export class BigNumber {
   }
 
   static randomInteger(bytes: number) {
-    return BigNumber.fromHex(forge.util.bytesToHex(forge.random.getBytesSync(bytes)));
+    return BigNumber.fromHex(Hex.stringify(_crypto.getRandomValues(new Uint8Array(bytes))));
   }
 }

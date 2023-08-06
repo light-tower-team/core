@@ -1,4 +1,5 @@
-import * as forge from "node-forge";
+import { _crypto } from "@common/crypto";
+import { Hex } from "@common/encoders/hex";
 
 import { BigNumber } from "./big-number";
 
@@ -7,18 +8,32 @@ import { BigNumber } from "./big-number";
  * @param args
  * @returns {BigNumber} big number
  */
-export function sha256(...args: (string | BigNumber)[]) {
-  const h = forge.md.sha256.create();
+export async function sha256(...args: (string | BigNumber)[]) {
+  const buffers: Uint8Array[] = [];
+  const textAsBuffer = new TextEncoder();
 
   for (const arg of args) {
     if (arg instanceof BigNumber) {
-      h.update(arg.toHex());
+      buffers.push(Hex.parse(arg.toHex()));
     } else if (typeof arg === "string") {
-      h.update(arg);
+      buffers.push(textAsBuffer.encode(arg));
     } else {
       throw new TypeError("Expected string or SRPInteger");
     }
   }
 
-  return BigNumber.fromHex(h.digest().toHex());
+  const buffer = new Uint8Array(buffers.reduce((length, buffer) => length + buffer.length, 0));
+  let i = 0;
+
+  for (const b of buffers) {
+    for (const byte of b) {
+      buffer[i++] = byte;
+    }
+  }
+
+  const hashBuffer = await _crypto.subtle
+    .digest("SHA-256", buffer)
+    .then((output) => Hex.stringify(new Uint8Array(output)));
+
+  return BigNumber.fromHex(hashBuffer);
 }

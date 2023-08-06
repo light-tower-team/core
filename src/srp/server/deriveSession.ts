@@ -12,14 +12,14 @@ import type { Session } from "../types";
  * @param {string} clientSessionProofKey
  * @return {Session} session
  */
-export function deriveSession(
+export async function deriveSession(
   serverSecretEphemeralKey: string,
   clientPublicEphemeralKey: string,
   salt: string,
   secretKey: string,
   verifier: string,
   clientSessionProofKey: string
-): Session {
+): Promise<Session> {
   const b = BigNumber.fromHex(serverSecretEphemeralKey);
   const A = BigNumber.fromHex(clientPublicEphemeralKey);
   const s = BigNumber.fromHex(salt);
@@ -32,13 +32,13 @@ export function deriveSession(
     throw new Error("The client sent an invalid public ephemeral");
   }
 
-  const u = H(A, B);
+  const u = await H(A, B);
 
   const S = A.multiply(v.modPow(u, N)).modPow(b, N);
 
-  const K = H(S);
+  const K = await H(S);
 
-  const M = H(H(N).xor(H(g)), H(I), s, A, B, K);
+  const M = await H((await H(N)).xor(await H(g)), await H(I), s, A, B, K);
 
   const expected = M;
   const actual = BigNumber.fromHex(clientSessionProofKey);
@@ -47,7 +47,7 @@ export function deriveSession(
     throw new Error("Client provided session proof is invalid");
   }
 
-  const P = H(A, M, K);
+  const P = await H(A, M, K);
 
   return {
     key: K.toHex(),

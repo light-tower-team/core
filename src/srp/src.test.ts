@@ -2,16 +2,17 @@ import { generateAccountKey, generateCryptoRandomString } from "@common/index";
 import { faker } from "@faker-js/faker";
 import { describe, expect, it } from "vitest";
 
+import { IncorrectServerSessionProofError } from "./client";
 import * as srp from "./src";
 
 describe("[SRP] ...", () => {
-  it("should correct generate verifier in the client", () => {
+  it("should correct generate verifier in the client", async () => {
     const TEST_ACCOUNT_SECRET = generateCryptoRandomString(16);
     const TEST_ACCOUNT_VERSION = "A1";
     const TEST_ACCOUNT_KEY = generateAccountKey(TEST_ACCOUNT_VERSION, TEST_ACCOUNT_SECRET);
     const TEST_PASSWORD = faker.internet.password();
 
-    const verifier = srp.client.deriveVerifier(TEST_ACCOUNT_KEY, TEST_PASSWORD);
+    const verifier = await srp.client.deriveVerifier(TEST_ACCOUNT_KEY, TEST_PASSWORD);
 
     expect(typeof verifier.salt).toEqual("string");
     expect(typeof verifier.verifier).toEqual("string");
@@ -26,14 +27,14 @@ describe("[SRP] ...", () => {
     expect(trimmedAccountId.slice(2, 12)).toEqual(trimmedAccountSecret.slice(0, 10));
   });
 
-  it("should correct generate verifier in the server", () => {
+  it("should correct generate verifier in the server", async () => {
     // client
     const TEST_ACCOUNT_SECRET = generateCryptoRandomString(16);
     const TEST_ACCOUNT_VERSION = "A1";
     const TEST_ACCOUNT_KEY = generateAccountKey(TEST_ACCOUNT_VERSION, TEST_ACCOUNT_SECRET);
     const TEST_PASSWORD = faker.internet.password();
 
-    const { salt, verifier, privateKey } = srp.client.deriveVerifier(TEST_ACCOUNT_KEY, TEST_PASSWORD);
+    const { salt, verifier, privateKey } = await srp.client.deriveVerifier(TEST_ACCOUNT_KEY, TEST_PASSWORD);
 
     const clientEphemeral = srp.client.generateEphemeralKeyPair();
 
@@ -49,7 +50,7 @@ describe("[SRP] ...", () => {
 
     // client
 
-    const clientSession = srp.client.deriveSession(
+    const clientSession = await srp.client.deriveSession(
       clientEphemeral.secret,
       serverEphemeral.public,
       salt,
@@ -62,7 +63,7 @@ describe("[SRP] ...", () => {
 
     // server
 
-    const serverSession = srp.server.deriveSession(
+    const serverSession = await srp.server.deriveSession(
       serverEphemeral.secret,
       clientEphemeral.public,
       salt,
@@ -79,14 +80,14 @@ describe("[SRP] ...", () => {
     srp.client.verifySession(clientEphemeral.public, clientSession, serverSession.proof);
   });
 
-  it("should throw error while verifying session with invalid proof key", () => {
+  it("should throw error while verifying session with invalid proof key", async () => {
     // client
     const TEST_ACCOUNT_SECRET = generateCryptoRandomString(16);
     const TEST_ACCOUNT_VERSION = "A1";
     const TEST_ACCOUNT_KEY = generateAccountKey(TEST_ACCOUNT_VERSION, TEST_ACCOUNT_SECRET);
     const TEST_PASSWORD = faker.internet.password();
 
-    const { salt, verifier, privateKey } = srp.client.deriveVerifier(TEST_ACCOUNT_KEY, TEST_PASSWORD);
+    const { salt, verifier, privateKey } = await srp.client.deriveVerifier(TEST_ACCOUNT_KEY, TEST_PASSWORD);
 
     const clientEphemeral = srp.client.generateEphemeralKeyPair();
 
@@ -96,7 +97,7 @@ describe("[SRP] ...", () => {
 
     // client
 
-    const clientSession = srp.client.deriveSession(
+    const clientSession = await srp.client.deriveSession(
       clientEphemeral.secret,
       serverEphemeral.public,
       salt,
@@ -106,7 +107,7 @@ describe("[SRP] ...", () => {
 
     // server
 
-    const serverSession = srp.server.deriveSession(
+    const serverSession = await srp.server.deriveSession(
       serverEphemeral.secret,
       clientEphemeral.public,
       salt,
@@ -117,6 +118,8 @@ describe("[SRP] ...", () => {
 
     // client
 
-    expect(() => srp.client.verifySession(faker.string.uuid(), clientSession, serverSession.proof)).toThrowError();
+    expect(srp.client.verifySession(faker.string.uuid(), clientSession, serverSession.proof)).rejects.toEqual(
+      new IncorrectServerSessionProofError()
+    );
   });
 });

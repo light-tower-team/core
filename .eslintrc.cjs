@@ -88,12 +88,6 @@ module.exports = {
         caughtErrorsIgnorePattern: "^_",
       },
     ],
-    "@typescript-eslint/consistent-type-assertions": [
-      "error",
-      {
-        assertionStyle: "never",
-      },
-    ],
     "@typescript-eslint/naming-convention": [
       "error",
       {

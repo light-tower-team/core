@@ -1,5 +1,5 @@
-/assets/
-/build/
+/dist/
 /node_modules/
-/public/
 .eslintrc.cjs
+vite.config.ts
+vitest.config.ts

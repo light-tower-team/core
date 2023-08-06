@@ -14,7 +14,7 @@
       "require": "./dist/index.umd.js"
     }
   },
-  "version": "0.0.1-alpha8",
+  "version": "0.0.1-alpha9",
   "license": "ISC",
   "author": "michailshcherbakov@gmail.com",
   "bugs": {

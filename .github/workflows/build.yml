@@ -43,7 +43,7 @@ jobs:
         run: yarn install --ignore-optional --offline
 
       - name: Install
-        run: yarn --cwd ./e2e/browser
+        run: yarn --cwd ./e2e/browser install --ignore-optional
 
       - name: Format and Lint check
         run: yarn fmt && yarn lint

@@ -33,12 +33,7 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: [
-    "@typescript-eslint",
-    "import",
-    "prettier",
-    "simple-import-sort",
-  ],
+  plugins: ["@typescript-eslint", "import", "prettier", "simple-import-sort"],
   overrides: [
     {
       files: ["*.ts"],

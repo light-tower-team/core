@@ -1,6 +1,7 @@
 import path from "node:path";
-import swc from "unplugin-swc";
+import stdLibBrowser from "node-stdlib-browser";
 import { defineConfig } from "vite";
+import { ModuleNameWithoutNodePrefix, nodePolyfills } from "vite-plugin-node-polyfills";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 import { name } from "./package.json";
@@ -8,6 +9,7 @@ import { name } from "./package.json";
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
+    target: "ES2017",
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
       name,
@@ -16,9 +18,14 @@ export default defineConfig({
   },
   plugins: [
     tsconfigPaths(),
-    swc.vite({
-      jsc: {
-        target: "es2022", // Does not accept `esnext`
+    nodePolyfills({
+      exclude: Object.keys(stdLibBrowser).filter(
+        (lib) => !lib.startsWith("node:") && !["process"].includes(lib)
+      ) as ModuleNameWithoutNodePrefix[],
+      globals: {
+        Buffer: true,
+        process: "build",
+        global: true,
       },
     }),
   ],

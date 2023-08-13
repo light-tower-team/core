@@ -1,5 +1,4 @@
 import { _crypto } from "@common/crypto";
-import { Hex } from "@common/encoders/hex";
 import { BigInteger } from "jsbn";
 
 const kBigInteger = Symbol("big-integer");
@@ -63,6 +62,6 @@ export class BigNumber {
   }
 
   static randomInteger(bytes: number) {
-    return BigNumber.fromHex(Hex.stringify(_crypto.getRandomValues(new Uint8Array(bytes))));
+    return BigNumber.fromHex(Buffer.from(_crypto.getRandomValues(new Uint8Array(bytes))).toString("hex"));
   }
 }

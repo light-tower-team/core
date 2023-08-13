@@ -1,5 +1,4 @@
 import { _crypto } from "@common/crypto";
-import { Hex } from "@common/encoders/hex";
 
 import { BigNumber } from "./big-number";
 
@@ -14,7 +13,7 @@ export async function sha256(...args: (string | BigNumber)[]) {
 
   for (const arg of args) {
     if (arg instanceof BigNumber) {
-      buffers.push(Hex.parse(arg.toHex()));
+      buffers.push(Buffer.from(arg.toHex(), "hex"));
     } else if (typeof arg === "string") {
       buffers.push(textAsBuffer.encode(arg));
     } else {
@@ -33,7 +32,7 @@ export async function sha256(...args: (string | BigNumber)[]) {
 
   const hashBuffer = await _crypto.subtle
     .digest("SHA-256", buffer)
-    .then((output) => Hex.stringify(new Uint8Array(output)));
+    .then((output) => Buffer.from(new Uint8Array(output)).toString("hex"));
 
   return BigNumber.fromHex(hashBuffer);
 }

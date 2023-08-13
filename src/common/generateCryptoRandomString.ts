@@ -1,13 +1,12 @@
 import { _crypto } from "./crypto";
-import { Hex } from "./encoders/hex";
 
 /**
  *  Generates the crypto string of the passed length
  *  @param {number} length the length of the generated crypto string
  *  @returns {string} the generated crypto string with the length
  */
-export function generateCryptoRandomString(length = 16) {
+export function generateCryptoRandomString(length = 32): string {
   const randomValues = _crypto.getRandomValues(new Uint8Array(length));
 
-  return Hex.stringify(randomValues).slice(0, length).toUpperCase();
+  return Buffer.from(randomValues).toString("hex").slice(0, length).toUpperCase();
 }

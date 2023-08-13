@@ -42,7 +42,13 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit == 'true'
         run: yarn install --ignore-optional --offline
 
-      - name: Install
+      - name: Build package
+        run: yarn build
+
+      - name: Link package
+        run: yarn link --link-folder ./e2e/browser/node_modules/@light-tower-team/core
+
+      - name: Install deps
         run: yarn --cwd ./e2e/browser install --ignore-optional
 
       - name: Format and Lint check

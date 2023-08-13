@@ -35,8 +35,7 @@
     "lint": "eslint . --fix  --report-unused-disable-directives --max-warnings 0",
     "lint:check": "eslint .",
     "fmt": "prettier . --write",
-    "fmt:check": "prettier . --check",
-    "zip": "yarn pack --filename light-tower-team-core-package.tgz"
+    "fmt:check": "prettier . --check"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",

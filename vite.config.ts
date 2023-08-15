@@ -1,10 +1,9 @@
 import path from "node:path";
-import stdLibBrowser from "node-stdlib-browser";
 import { defineConfig } from "vite";
-import { ModuleNameWithoutNodePrefix, nodePolyfills } from "vite-plugin-node-polyfills";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 import { name } from "./package.json";
+import { nodePolyfills } from "./plugins/vite-plugin-node-polyfills/dist";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,9 +18,7 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     nodePolyfills({
-      exclude: Object.keys(stdLibBrowser).filter(
-        (lib) => !lib.startsWith("node:") && !["process"].includes(lib)
-      ) as ModuleNameWithoutNodePrefix[],
+      include: ["buffer", "process"],
       globals: {
         Buffer: true,
         process: "build",

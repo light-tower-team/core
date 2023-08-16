@@ -1,9 +1,0 @@
-{
-  "type": "module",
-  "sideEffects": false,
-  "exports": {
-    ".": "./dist/index.js"
-  },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js"
-}

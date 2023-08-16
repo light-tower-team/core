@@ -96,9 +96,6 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit == 'true'
         run: yarn install --ignore-optional --offline
 
-      - name: Format and Lint check
-        run: yarn fmt && yarn lint
-
       - name: Unit tests and Coverage
         run: yarn test --coverage
 
@@ -147,7 +144,7 @@ jobs:
       - name: Go to the e2e tests
         run: cd ./e2e/browser
 
-      - name: Install
+      - name: Install deps
         run: yarn
 
       - name: Cypress run

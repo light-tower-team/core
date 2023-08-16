@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 import { name } from "./package.json";
-import { nodePolyfills } from "./plugins/vite-plugin-node-polyfills/dist";
+import { nodePolyfills } from "./plugins/vite-plugin-node-polyfills";
 
 // https://vitejs.dev/config/
 export default defineConfig({

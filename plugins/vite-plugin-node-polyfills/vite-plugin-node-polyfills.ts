@@ -36,7 +36,7 @@ export type NodePolyfillsOptions = {
   };
 };
 
-const globals = ["buffer", "global", "process"].flatMap((name) => [name, `node:${name}`]);
+const globals = ["Buffer", "global", "process"].flatMap((name) => [name, `node:${name}`]);
 
 export const nodePolyfills = (options: Partial<NodePolyfillsOptions> = {}): Plugin => {
   const resolvedOptions: NodePolyfillsOptions = {
@@ -53,7 +53,7 @@ export const nodePolyfills = (options: Partial<NodePolyfillsOptions> = {}): Plug
   };
 
   const require = createRequire(import.meta.url);
-  const esbuildShim = require.resolve("./shim");
+  const esbuildShim = require.resolve("node-stdlib-browser/helpers/esbuild/shim");
 
   const polyfills = Object.entries(stdLibBrowser).reduce<Partial<Record<ModuleName, string>>>(
     (included, [name, value]) => {
@@ -66,7 +66,7 @@ export const nodePolyfills = (options: Partial<NodePolyfillsOptions> = {}): Plug
           ? containsModuleName(resolvedOptions.include, name)
           : !containsModuleName(resolvedOptions.exclude, name)
       ) {
-        included[name] = globals.includes(name) ? esbuildShim : value;
+        included[name] = value;
       }
 
       return included;
@@ -82,7 +82,9 @@ export const nodePolyfills = (options: Partial<NodePolyfillsOptions> = {}): Plug
       return {
         build: {
           rollupOptions: {
+            // https://github.com/niksy/node-stdlib-browser#rollup
             onwarn: (warning, rollupWarn) => handleCircularDependancyWarning(warning, rollupWarn),
+            // https://github.com/niksy/node-stdlib-browser#rollup
             plugins: [
               {
                 ...inject(
@@ -115,36 +117,18 @@ export const nodePolyfills = (options: Partial<NodePolyfillsOptions> = {}): Plug
         },
         optimizeDeps: {
           esbuildOptions: {
+            // https://github.com/niksy/node-stdlib-browser#esbuild
             define: globals.reduce((esbuildOptions, lib) => {
               if (isTargetEnabled(resolvedOptions.globals[lib], "dev")) {
-                esbuildOptions[lib] = { [lib]: lib };
+                esbuildOptions[lib] = lib;
               }
 
               return esbuildOptions;
             }, {}),
+            // https://github.com/niksy/node-stdlib-browser#esbuild
             inject: [esbuildShim],
-            plugins: [
-              esbuildPlugin(polyfills),
-              // Supress the 'injected path "..." cannot be marked as external' error in Vite 4 (emitted by esbuild).
-              // https://github.com/evanw/esbuild/blob/edede3c49ad6adddc6ea5b3c78c6ea7507e03020/internal/bundler/bundler.go#L1469
-              {
-                name: "vite-plugin-node-polyfills-shims-resolver",
-                setup(build) {
-                  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping
-                  const escapedGlobalShimsPath = esbuildShim.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-                  const globalShimsFilter = new RegExp(`^${escapedGlobalShimsPath}$`);
-
-                  // https://esbuild.github.io/plugins/#on-resolve
-                  build.onResolve({ filter: globalShimsFilter }, () => {
-                    return {
-                      // https://github.com/evanw/esbuild/blob/edede3c49ad6adddc6ea5b3c78c6ea7507e03020/internal/bundler/bundler.go#L1468
-                      external: false,
-                      path: esbuildShim,
-                    };
-                  });
-                },
-              },
-            ],
+            // https://github.com/niksy/node-stdlib-browser#esbuild
+            plugins: [esbuildPlugin(polyfills)],
           },
         },
         resolve: {

@@ -61,10 +61,8 @@
     "vitest": "^0.33.0"
   },
   "dependencies": {
-    "buffer-polyfill": "npm:buffer@^6.0.3",
     "fast-sha256": "^1.3.0",
     "jsbn": "^1.1.0",
-    "process-polyfill": "npm:process@^0.11.10",
     "unorm": "^1.6.0"
   }
 }

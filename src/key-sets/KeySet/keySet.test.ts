@@ -1,7 +1,7 @@
 import { AES } from "@common/aes";
 import { generateCryptoRandomString } from "@common/generateCryptoRandomString";
 
-import { createPrimaryKeySet } from "../PrimaryKeyset";
+import { createPrimaryKeySet } from "../PrimaryKeySet";
 import { createKeySet } from "./createKeySet";
 import { decryptKeySet } from "./decryptKeySet";
 import { encryptKeySet } from "./encryptKeySet";

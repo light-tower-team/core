@@ -1,5 +1,4 @@
 import { _crypto } from "@common/crypto";
-import { generateCryptoRandomSalt } from "@common/generateCryptoRandomSalt";
 import { generateCryptoRandomString } from "@common/generateCryptoRandomString";
 import { RSA } from "@common/rsa";
 
@@ -15,18 +14,12 @@ describe("symmetric key", () => {
     const symmetricKey = await SymmetricKey.generate();
 
     const data = JSON.stringify({ msg: "test" });
-    const iv = generateCryptoRandomSalt();
-
-    const encryptedData = await _crypto.subtle.encrypt(
-      { name: "AES-GCM", iv, length: 256 },
-      symmetricKey,
-      Buffer.from(data, "utf-8")
-    );
+    const encryptedData = await symmetricKey.encrypt(data);
 
     const encryptedSymmetricKey = await SymmetricKey.encryptByAUK(symmetricKey, auk);
     const decryptedSymmetricKey = await SymmetricKey.decryptByAUK(encryptedSymmetricKey, auk);
 
-    expect(_crypto.subtle.decrypt({ name: "AES-GCM", iv, length: 256 }, decryptedSymmetricKey, encryptedData));
+    expect(decryptedSymmetricKey.decrypt(encryptedData)).resolves.toEqual(data);
   });
 
   it("should encrypt and decrypt symmetric key by primary key set key pair", async () => {
@@ -35,19 +28,11 @@ describe("symmetric key", () => {
     const symmetricKey = await SymmetricKey.generate();
 
     const data = JSON.stringify({ msg: "test" });
-    const iv = generateCryptoRandomSalt();
-
-    const encryptedData = await _crypto.subtle.encrypt(
-      { name: "AES-GCM", iv, length: 256, tagLength: 128 },
-      symmetricKey,
-      Buffer.from(data, "utf-8")
-    );
+    const encryptedData = await symmetricKey.encrypt(data);
 
     const encryptedSymmetricKey = await SymmetricKey.encryptByPublicKey(symmetricKey, publicKey);
     const decryptedSymmetricKey = await SymmetricKey.decryptByPrivateKey(encryptedSymmetricKey, privateKey);
 
-    expect(
-      _crypto.subtle.decrypt({ name: "AES-GCM", iv, length: 256, tagLength: 128 }, decryptedSymmetricKey, encryptedData)
-    );
+    expect(decryptedSymmetricKey.decrypt(encryptedData)).resolves.toEqual(data);
   });
 });

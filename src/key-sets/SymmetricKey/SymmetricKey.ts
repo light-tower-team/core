@@ -1,61 +1,33 @@
+import { AES } from "@common/aes";
 import { _crypto } from "@common/crypto";
 import { generateCryptoRandomSalt } from "@common/generateCryptoRandomSalt";
 import { JsonWebEncryption } from "@common/jwe";
+import { pbkdf2 } from "@common/pbkdf2";
 import { RSA } from "@common/rsa";
 
 export class SymmetricKey {
-  public static async generate(): Promise<CryptoKey> {
-    const symmetricKey = await _crypto.subtle.generateKey(
-      {
-        name: "AES-GCM",
-        length: 256,
-      },
-      true,
-      ["wrapKey", "unwrapKey", "encrypt", "decrypt"]
-    );
-
-    return symmetricKey;
+  public static async generate(): Promise<AES> {
+    return AES.generate();
   }
 
-  public static async encryptByAUK(symmetricKey: CryptoKey, auk: CryptoKey): Promise<JsonWebEncryption> {
-    const [iv, p2s] = await Promise.all([generateCryptoRandomSalt(), generateCryptoRandomSalt()]);
+  public static async encryptByAUK(symmetricKey: AES, auk: CryptoKey): Promise<JsonWebEncryption> {
+    const p2s = generateCryptoRandomSalt();
     const p2c = 650_000;
-    const tag = 128;
 
-    const accountUnlockKey = await _crypto.subtle.deriveKey(
-      {
-        name: "PBKDF2",
-        salt: p2s,
-        iterations: p2c,
-        hash: "SHA-256",
-      },
-      auk,
-      { name: "AES-GCM", length: 256, hash: "SHA-256" },
-      true,
-      ["wrapKey", "unwrapKey"]
-    );
+    const accountUnlockKey = await pbkdf2(auk, p2s, p2c);
 
-    const encryptedSymKey = await _crypto.subtle.wrapKey("jwk", symmetricKey, accountUnlockKey, {
-      name: "AES-GCM",
-      length: 256,
-      iv,
-      tagLength: tag,
-    });
+    const encryptedSymmetricKey = await accountUnlockKey.wrapKey(symmetricKey);
 
     return {
+      ...encryptedSymmetricKey,
       kid: "mp",
-      enc: "A256GCM",
-      cty: "jwk+json",
-      iv: Buffer.from(iv).toString("base64"),
       p2s: Buffer.from(p2s).toString("base64"),
-      data: Buffer.from(encryptedSymKey).toString("base64"),
       alg: "PBKDF2-HS256",
       p2c,
-      tag,
     };
   }
 
-  public static async decryptByAUK(symmetricKey: JsonWebEncryption, auk: CryptoKey): Promise<CryptoKey> {
+  public static async decryptByAUK(symmetricKey: JsonWebEncryption, auk: CryptoKey): Promise<AES> {
     if (!symmetricKey.iv) {
       throw new TypeError(`The initialization vector is required`);
     }
@@ -72,62 +44,21 @@ export class SymmetricKey {
       throw new TypeError(`The authentication Tag is required`);
     }
 
-    const accountUnlockKey = await _crypto.subtle.deriveKey(
-      {
-        name: "PBKDF2",
-        salt: Buffer.from(symmetricKey.p2s, "base64"),
-        iterations: symmetricKey.p2c,
-        hash: "SHA-256",
-      },
-      auk,
-      { name: "AES-GCM", length: 256 },
-      true,
-      ["wrapKey", "unwrapKey"]
-    );
+    const accountUnlockKey = await pbkdf2(auk, Buffer.from(symmetricKey.p2s, "base64"), symmetricKey.p2c);
 
-    const encryptedSymKey = await _crypto.subtle.unwrapKey(
-      "jwk",
-      Buffer.from(symmetricKey.data, "base64"),
-      accountUnlockKey,
-      {
-        name: "AES-GCM",
-        length: 256,
-        iv: Buffer.from(symmetricKey.iv, "base64"),
-        tagLength: symmetricKey.tag,
-      },
-      { name: "AES-GCM", length: 256, hash: "SHA-256" },
-      true,
-      ["wrapKey", "unwrapKey", "decrypt", "encrypt"]
-    );
+    const encryptedSymKey = await accountUnlockKey.unwrapKey<AES>(symmetricKey);
 
     return encryptedSymKey;
   }
 
-  public static async encryptByPublicKey(
-    symmetricKey: CryptoKey,
-    publicKey: RSA.PublicKey
-  ): Promise<JsonWebEncryption> {
-    const encryptedSymKey = await publicKey.wrapKey(symmetricKey);
-
-    return {
-      kid: "pub",
-      enc: "A256GCM",
-      cty: "jwk+json",
-      data: encryptedSymKey,
-      alg: "RSA-OAEP-256",
-    };
+  public static async encryptByPublicKey(symmetricKey: AES, publicKey: RSA.PublicKey): Promise<JsonWebEncryption> {
+    return publicKey.wrapKey(symmetricKey);
   }
 
   public static async decryptByPrivateKey(
     encryptedSymmetricKey: JsonWebEncryption,
     privateKey: RSA.PrivateKey
-  ): Promise<CryptoKey> {
-    const encryptedSymKey = await privateKey.unwrapKey(
-      encryptedSymmetricKey.data,
-      { name: "AES-GCM", length: 256, hash: "SHA-256" },
-      ["wrapKey", "unwrapKey", "decrypt", "encrypt"]
-    );
-
-    return encryptedSymKey;
+  ): Promise<AES> {
+    return privateKey.unwrapKey(encryptedSymmetricKey);
   }
 }

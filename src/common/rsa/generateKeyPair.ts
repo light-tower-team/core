@@ -11,7 +11,7 @@ export async function generateKeyPair(): Promise<CryptoKeyPair> {
       hash: "SHA-256",
     },
     true,
-    ["wrapKey", "unwrapKey", "encrypt", "decrypt"]
+    ["wrapKey", "unwrapKey", "decrypt", "encrypt"]
   );
 
   return {

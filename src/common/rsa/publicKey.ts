@@ -9,6 +9,7 @@ export async function stringifyPublicKey(publicKey: PublicKey): Promise<JsonWebK
 export async function parsePublicKey(jwk: JsonWebKey): Promise<PublicKey> {
   const publicKey = await _crypto.subtle.importKey("jwk", jwk, { name: "RSA-OAEP", hash: "SHA-256" }, true, [
     "encrypt",
+    "wrapKey",
   ]);
 
   return new PublicKey(publicKey);

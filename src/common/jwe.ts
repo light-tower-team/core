@@ -38,3 +38,7 @@ export type JsonWebEncryption = {
    */
   p2c?: number;
 };
+
+export interface IEncryptionKey {
+  origin: CryptoKey;
+}

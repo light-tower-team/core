@@ -1,15 +1,15 @@
-export interface Ephemeral {
+export type Ephemeral = {
   public: string;
   secret: string;
-}
+};
 
-export interface Session {
+export type Session = {
   key: string;
   proof: string;
-}
+};
 
-export interface Verifier {
+export type Verifier = {
   verifier: string;
   privateKey: string;
   salt: string;
-}
+};

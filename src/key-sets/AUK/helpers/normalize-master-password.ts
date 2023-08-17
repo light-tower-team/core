@@ -1,9 +1,6 @@
 import unorm from "unorm";
 
 /**
- *
- * @param masterPassword
- * @returns
  * @link https://github.com/walling/unorm#nodejs-example
  */
 export function normalizeMasterPassword(masterPassword: string): string {

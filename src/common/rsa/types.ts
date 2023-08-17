@@ -1,4 +1,6 @@
+import { AES } from "@common/aes";
 import { _crypto } from "@common/crypto";
+import { JsonWebEncryption } from "@common/jwe";
 
 export class PublicKey {
   public constructor(public readonly origin: CryptoKey) {}
@@ -13,10 +15,16 @@ export class PublicKey {
     return Buffer.from(encryptedData).toString("base64");
   }
 
-  public async wrapKey(key: CryptoKey): Promise<string> {
-    const encryptedData = await _crypto.subtle.wrapKey("jwk", key, this.origin, this.origin.algorithm);
+  public async wrapKey(key: AES): Promise<JsonWebEncryption> {
+    const encryptedKey = await _crypto.subtle.wrapKey("jwk", key.origin, this.origin, this.origin.algorithm);
 
-    return Buffer.from(encryptedData).toString("base64");
+    return {
+      kid: "aes",
+      cty: "jwk+json",
+      enc: "A256GCM",
+      data: Buffer.from(encryptedKey).toString("base64"),
+      alg: "RSA-OAEP-256",
+    };
   }
 }
 
@@ -33,25 +41,18 @@ export class PrivateKey {
     return Buffer.from(decryptedData).toString("utf-8");
   }
 
-  public unwrapKey(
-    encryptedKey: string,
-    unwrappedKeyAlgorithm:
-      | AlgorithmIdentifier
-      | RsaHashedImportParams
-      | EcKeyImportParams
-      | HmacImportParams
-      | AesKeyAlgorithm,
-    keyUsages: KeyUsage[]
-  ): Promise<CryptoKey> {
-    return _crypto.subtle.unwrapKey(
+  public async unwrapKey<TEncKey extends AES>(encryptedKey: JsonWebEncryption): Promise<TEncKey> {
+    const origin = await _crypto.subtle.unwrapKey(
       "jwk",
-      Buffer.from(encryptedKey, "base64"),
+      Buffer.from(encryptedKey.data, "base64"),
       this.origin,
       this.origin.algorithm,
-      unwrappedKeyAlgorithm,
+      { name: "AES-GCM", length: 256, hash: "SHA-256" },
       true,
-      keyUsages
+      ["wrapKey", "unwrapKey", "decrypt", "encrypt"]
     );
+
+    return new AES(origin) as unknown as TEncKey;
   }
 }
 

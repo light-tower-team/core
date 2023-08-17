@@ -1,3 +1,3 @@
-export * as common from "./common";
-export * as srp from "./srp";
+export * as Common from "./common";
+export * as SRP from "./srp";
 export * as KeySets from "./key-sets";

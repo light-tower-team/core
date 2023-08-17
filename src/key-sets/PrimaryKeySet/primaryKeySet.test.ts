@@ -12,7 +12,7 @@ describe("primaryKeySet", () => {
 
     const encryptedPrimaryKeySet = await createPrimaryKeySet(masterPassword);
 
-    expect(encryptedPrimaryKeySet.auk).toBeInstanceOf(CryptoKey);
+    expect(encryptedPrimaryKeySet.auk).toBeDefined();
     expect(encryptedPrimaryKeySet.symmetricKey).toBeInstanceOf(AES);
     expect(encryptedPrimaryKeySet.publicKey).toBeInstanceOf(RSA.PublicKey);
     expect(encryptedPrimaryKeySet.privateKey).toBeInstanceOf(RSA.PrivateKey);

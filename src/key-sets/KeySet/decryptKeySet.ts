@@ -1,6 +1,6 @@
 import { _crypto } from "@common/crypto";
 
-import { PrimaryKeySet } from "../PrimaryKeySet";
+import { PrimaryKeySet } from "../PrimaryKeyset";
 import { EncryptedKeySet, KeySet } from "./types";
 
 export async function decryptKeySet(encryptedKeySet: EncryptedKeySet, primaryKetSet: PrimaryKeySet): Promise<KeySet> {

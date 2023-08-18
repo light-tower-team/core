@@ -8,11 +8,9 @@ import { encryptKeySet } from "./encryptKeySet";
 
 describe("secondaryKeySets", () => {
   it("should create secondary key set", async () => {
-    const vaultKey = await AES.generate();
+    const keySet = await createKeySet();
 
-    const keySet = createKeySet(vaultKey);
-
-    expect(keySet.symmetricKey).toEqual(vaultKey);
+    expect(keySet.symmetricKey).toBeInstanceOf(AES);
   });
 
   it("should encrypt and decrypt secondary key set", async () => {
@@ -20,9 +18,7 @@ describe("secondaryKeySets", () => {
 
     const primaryKeySet = await createPrimaryKeySet(masterPassword);
 
-    const vaultKey = await AES.generate();
-
-    const secondaryKeySet = createKeySet(vaultKey);
+    const secondaryKeySet = await createKeySet();
 
     const encryptedSecKeySet = await encryptKeySet(secondaryKeySet, primaryKeySet);
     const decryptedSecKeySet = await decryptKeySet(encryptedSecKeySet, primaryKeySet);

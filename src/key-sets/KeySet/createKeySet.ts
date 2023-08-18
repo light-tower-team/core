@@ -2,8 +2,10 @@ import { AES } from "@common/aes";
 
 import { KeySet } from "./types";
 
-export function createKeySet(sourceKey: AES): KeySet {
+export async function createKeySet(): Promise<KeySet> {
+  const symmetricKey = await AES.generate();
+
   return {
-    symmetricKey: sourceKey,
+    symmetricKey,
   };
 }

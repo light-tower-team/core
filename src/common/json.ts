@@ -1,1 +1,1 @@
-export type JSON = string | number | boolean | Array<JSON> | { [key: string | number]: JSON };
+export type Json = string | number | boolean | Array<Json> | { [key: string | number]: Json };

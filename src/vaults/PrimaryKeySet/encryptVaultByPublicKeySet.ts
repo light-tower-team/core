@@ -1,9 +1,9 @@
-import { JSON } from "@common/json";
+import { Json } from "@common/json";
 import { PrimaryKeySet } from "@src/key-sets/PrimaryKeySet";
 
 import { EncryptedVault, Vault } from "../types";
 
-export async function encryptVaultByPublicKeySet<TOverview extends JSON>(
+export async function encryptVaultByPublicKeySet<TOverview extends Json>(
   vault: Vault<TOverview>,
   primaryKeySet: PrimaryKeySet
 ): Promise<EncryptedVault<TOverview>> {

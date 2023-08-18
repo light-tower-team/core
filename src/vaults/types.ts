@@ -1,13 +1,13 @@
 import { AES } from "@common/aes";
-import { JSON } from "@common/json";
+import { Json } from "@common/json";
 import { JsonWebEncryption } from "@common/jwe";
 
-export type Vault<TOverview extends JSON> = {
+export type Vault<TOverview extends Json = Json> = {
   key: AES;
   overview: TOverview;
 };
 
-export type EncryptedVault<TOverview extends JSON> = {
+export type EncryptedVault<TOverview extends Json = Json> = {
   encKey: JsonWebEncryption;
   overview: TOverview;
 };

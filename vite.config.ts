@@ -13,6 +13,12 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.ts"),
       name,
       fileName: (format) => `index.${format}.js`,
+      formats: ["es"],
+    },
+  },
+  esbuild: {
+    supported: {
+      "top-level-await": true, //browsers can handle top-level-await features
     },
   },
   plugins: [

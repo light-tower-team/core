@@ -67,6 +67,7 @@ export const nodePolyfills = (options: Partial<NodePolyfillsOptions> = {}): Plug
           : !containsModuleName(resolvedOptions.exclude, name)
       ) {
         included[name] = value;
+        included[`node:${name}`] = value;
       }
 
       return included;

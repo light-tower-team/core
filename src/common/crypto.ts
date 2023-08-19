@@ -8,9 +8,13 @@ if (typeof window !== "undefined" && window.crypto) {
   _crypto = self.crypto;
 } else if (typeof process !== "undefined" && process.versions && process.versions.node) {
   // Native crypto import via import (NodeJS)
-  import("node:crypto").then(({ webcrypto }) => {
-    _crypto = webcrypto as Crypto;
-  });
+
+  // it needs to prevent vite optimization for browser compatibility
+  const nodeCryptoPath = "node:crypto";
+
+  const { webcrypto } = await import(nodeCryptoPath);
+
+  _crypto = webcrypto as Crypto;
 }
 
 export { _crypto };

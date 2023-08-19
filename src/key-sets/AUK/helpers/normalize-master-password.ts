@@ -1,5 +1,3 @@
-import unorm from "unorm";
-
 /**
  * @link https://github.com/walling/unorm#nodejs-example
  */
@@ -8,5 +6,5 @@ export function normalizeMasterPassword(masterPassword: string): string {
 
   const combiningCharacters = /[\u0300-\u036F]/g;
 
-  return unorm.nfkd(trimmedMasterPassword).replace(combiningCharacters, "");
+  return trimmedMasterPassword.normalize("NFKD").replace(combiningCharacters, "");
 }

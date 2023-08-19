@@ -62,7 +62,6 @@
     "vitest": "^0.33.0"
   },
   "dependencies": {
-    "jsbn": "^1.1.0",
-    "unorm": "^1.6.0"
+    "jsbn": "^1.1.0"
   }
 }

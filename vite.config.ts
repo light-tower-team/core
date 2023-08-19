@@ -27,7 +27,7 @@ export default defineConfig({
       include: ["buffer", "process"],
       globals: {
         Buffer: true,
-        process: true,
+        process: false,
         global: true,
       },
     }),

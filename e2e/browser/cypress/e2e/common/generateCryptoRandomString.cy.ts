@@ -1,8 +1,8 @@
-import { Common } from "@light-tower-team/core";
+import { common } from "@light-tower-team/core";
 
 describe("generateCryptoRandomString", () => {
   it("should generate crypto random string", () => {
-    const str = Common.generateCryptoRandomString();
+    const str = common.generateCryptoRandomString();
 
     expect(str).have.length(32);
   });

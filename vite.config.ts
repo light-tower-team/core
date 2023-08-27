@@ -1,9 +1,9 @@
 import path from "node:path";
 import { defineConfig } from "vite";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 import { name } from "./package.json";
-import { nodePolyfills } from "./plugins/vite-plugin-node-polyfills";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,12 +24,12 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     nodePolyfills({
-      include: ["buffer", "process"],
       globals: {
         Buffer: true,
         process: false,
         global: true,
       },
+      protocolImports: true,
     }),
   ],
 });

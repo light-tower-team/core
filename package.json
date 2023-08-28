@@ -27,7 +27,7 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "version": "0.0.1-alpha15",
+  "version": "0.0.1-alpha16",
   "license": "ISC",
   "author": "michailshcherbakov@gmail.com",
   "bugs": {

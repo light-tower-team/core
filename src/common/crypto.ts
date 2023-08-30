@@ -12,9 +12,11 @@ if (typeof window !== "undefined" && window.crypto) {
   // it needs to prevent vite optimization for browser compatibility
   const nodeCryptoPath = "node:crypto";
 
-  import(nodeCryptoPath).then(({ webcrypto }) => {
+  (async () => {
+    const { webcrypto } = await import(nodeCryptoPath);
+
     _crypto = webcrypto as Crypto;
-  });
+  })();
 }
 
 export { _crypto };

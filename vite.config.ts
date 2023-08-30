@@ -1,6 +1,7 @@
 import fg from "fast-glob";
+import stdLibBrowser from "node-stdlib-browser";
 import { defineConfig } from "vite";
-import { nodePolyfills } from "vite-plugin-node-polyfills";
+import { ModuleNameWithoutNodePrefix, nodePolyfills } from "vite-plugin-node-polyfills";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 import { name } from "./package.json";
@@ -20,16 +21,17 @@ export default defineConfig({
     lib: {
       entry: entries,
       name,
-      formats: ["es", "cjs"],
+      formats: ["es"],
     },
   },
   plugins: [
     tsconfigPaths(),
     nodePolyfills({
+      exclude: Object.keys(stdLibBrowser) as ModuleNameWithoutNodePrefix[],
       globals: {
         Buffer: true,
-        process: false,
         global: true,
+        process: false,
       },
       protocolImports: true,
     }),

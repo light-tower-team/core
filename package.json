@@ -3,29 +3,28 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "typings": "./dist/index.d.ts",
-  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.cjs",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs",
+      "require": "./dist/index.mjs"
     },
     "./common": {
       "types": "./dist/common/index.d.ts",
-      "import": "./dist/common/index.js",
-      "default": "./dist/common/index.cjs",
-      "require": "./dist/common/index.cjs"
+      "import": "./dist/common/index.mjs",
+      "default": "./dist/common/index.mjs",
+      "require": "./dist/common/index.mjs"
     },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "version": "0.0.1-alpha16",
   "license": "ISC",

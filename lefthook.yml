@@ -1,0 +1,22 @@
+pre-push:
+  parallel: true
+  commands:
+    eslint:
+      tags: frontend style
+      files: git diff --name-only --diff-filter=d origin/master...HEAD
+      glob: "*.{ts,tsx}"
+      run: ./node_modules/.bin/eslint --report-unused-disable-directives --max-warnings 0 {files}
+    prettier:
+      tags: frontend style
+      files: git diff --name-only --diff-filter=d origin/master...HEAD
+      glob: "*.{ts,tsx}"
+      run: ./node_modules/.bin/prettier --check {files}
+
+auto-fix:
+  parallel: true
+  commands:
+    frontend:
+      tags: frontend style
+      files: git diff --name-only --diff-filter=d origin/master...HEAD --cached
+      glob: "*.{ts,tsx}"
+      run: "./node_modules/.bin/eslint --fix {files} && ./node_modules/.bin/prettier --write --list-different {files}"

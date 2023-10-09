@@ -3,9 +3,8 @@ pre-push:
   commands:
     frontend-type-check:
       tags: frontend type check
-      files: git diff --name-only --diff-filter=d origin/master...HEAD
       glob: "*.{ts,tsx}"
-      run: ./node_modules/.bin/eslint --report-unused-disable-directives --max-warnings 0 {files}
+      run: "./node_modules/.bin/tsc --incremental --noEmit"
     frontend-eslint:
       tags: frontend style
       files: git diff --name-only --diff-filter=d origin/master...HEAD
@@ -20,10 +19,6 @@ pre-push:
 auto-fix:
   parallel: true
   commands:
-    frontend-type-check:
-      tags: frontend type check
-      glob: "*.{ts,tsx}"
-      run: "./node_modules/.bin/tsc --incremental"
     frontend-style:
       tags: frontend style
       files: git diff --name-only --diff-filter=d origin/master...HEAD --cached
